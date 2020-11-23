@@ -25,7 +25,7 @@ class ConfusionMatrix(object):
 
     def __init__(self, num_classes=2, streaming=False):
         self.confusion_matrix = np.zeros(
-            [num_classes, num_classes], dtype='int64')
+            [num_classes, num_classes], dtype='float32')
         self.num_classes = num_classes
         self.streaming = streaming
 
@@ -45,12 +45,12 @@ class ConfusionMatrix(object):
         spm = csr_matrix(
             (one, (label, pred)), shape=(self.num_classes, self.num_classes))
         spm = spm.todense()
-        self.confusion_matrix += spm
+        self.confusion_matrix += spm / 100.0
 
     def zero_matrix(self):
         """ Clear confusion matrix """
         self.confusion_matrix = np.zeros(
-            [self.num_classes, self.num_classes], dtype='int64')
+            [self.num_classes, self.num_classes], dtype='float32')
 
     def mean_iou(self):
         iou_list = []
