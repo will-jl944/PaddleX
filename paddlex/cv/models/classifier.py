@@ -22,7 +22,8 @@ import paddle.nn.functional as F
 from paddle.static import InputSpec
 from paddlex.utils import logging, TrainingStats
 from paddlex.cv.models.base import BaseModel
-from paddlex.cv.nets.ppcls.modeling import architectures
+from PaddleClas.ppcls.modeling import architectures
+# from paddlex.cv.nets.ppcls.modeling import architectures
 from paddlex.cv.nets.ppcls.modeling.loss import CELoss
 from paddlex.cv.transforms import arrange_transforms
 
