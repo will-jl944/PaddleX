@@ -489,6 +489,7 @@ class MobileNetV3_small(BaseClassifier):
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
         params = {'scale': scale}
+        model_name = 'MobileNetV3_small_x' + str(scale).replace('.', '_')
         super(MobileNetV3_small, self).__init__(
             model_name='MobileNetV3_small', num_classes=num_classes, **params)
 
@@ -501,8 +502,9 @@ class MobileNetV3_large(BaseClassifier):
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
         params = {'scale': scale}
+        model_name = 'MobileNetV3_large_x' + str(scale).replace('.', '_')
         super(MobileNetV3_large, self).__init__(
-            model_name='MobileNetV3_large', num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes, **params)
 
 
 class DenseNet121(BaseClassifier):
