@@ -22,8 +22,8 @@ import paddle.nn.functional as F
 from paddle.static import InputSpec
 from paddlex.utils import logging, TrainingStats
 from paddlex.cv.models.base import BaseModel
-from paddlex.cv.nets.ppcls.modeling import architectures
-from paddlex.cv.nets.ppcls.modeling.loss import CELoss
+from PaddleClas.ppcls.modeling import architectures
+from PaddleClas.ppcls.modeling.loss import CELoss
 from paddlex.cv.transforms import arrange_transforms
 
 __all__ = [
@@ -399,7 +399,10 @@ class ResNet50_vd(BaseClassifier):
 class ResNet50_vd_ssld(BaseClassifier):
     def __init__(self, num_classes=1000):
         super(ResNet50_vd_ssld, self).__init__(
-            model_name='ResNet50_vd_ssld', num_classes=num_classes)
+            model_name='ResNet50_vd',
+            num_classes=num_classes,
+            lr_mult_list=[.1, .1, .2, .2, .3])
+        self.model_name = 'ResNet50_vd_ssld'
 
 
 class ResNet101_vd(BaseClassifier):
@@ -411,7 +414,10 @@ class ResNet101_vd(BaseClassifier):
 class ResNet101_vd_ssld(BaseClassifier):
     def __init__(self, num_classes=1000):
         super(ResNet101_vd_ssld, self).__init__(
-            model_name='ResNet101_vd_ssld', num_classes=num_classes)
+            model_name='ResNet101_vd_ssld',
+            num_classes=num_classes,
+            lr_mult_list=[.1, .1, .2, .2, .3])
+        self.model_name = 'ResNet101_vd_ssld'
 
 
 class ResNet152_vd(BaseClassifier):
