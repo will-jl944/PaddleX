@@ -55,6 +55,6 @@ model.train(
     warmup_steps=500,
     warmup_start_lr=0.0,
     save_interval_epochs=5,
-    lr_decay_epochs=[125, 200, 250],
+    lr_decay_epochs=[125, 210, 250],
     save_dir='output/ppyolo_r50vd_dcn',
     use_vdl=True)

@@ -19,15 +19,15 @@ import paddle
 import paddle.nn.functional as F
 from paddle.static import InputSpec
 import paddlex
-from paddlex.cv.nets.paddleseg import models
 from paddlex.cv.transforms import arrange_transforms
 from paddlex.utils import get_single_card_bs
 import paddlex.utils.logging as logging
 from .base import BaseModel
 from .utils import seg_metrics as metrics
 from paddlex.utils.checkpoint import seg_pretrain_weights_dict
-from paddlex.cv.nets.paddleseg.cvlibs import manager
 from paddlex.cv.transforms import Decode
+from PaddleSeg.paddleseg import models
+from PaddleSeg.paddleseg.cvlibs import manager
 
 __all__ = ["UNet", "DeepLabV3P", "FastSCNN", "HRNet", "BiSeNetV2"]
 
