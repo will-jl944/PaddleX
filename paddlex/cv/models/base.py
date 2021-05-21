@@ -63,17 +63,13 @@ class BaseModel:
                     os.remove(save_dir)
                 os.makedirs(save_dir)
             if self.model_type == 'classifier':
-                scale = getattr(self.net, 'scale', None)
                 pretrain_weights = get_pretrain_weights(
-                    pretrain_weights,
-                    self.__class__.__name__,
-                    save_dir,
-                    scale=scale)
+                    pretrain_weights, self.__class__.__name__, save_dir)
             else:
                 backbone_name = getattr(self, 'backbone_name', None)
                 pretrain_weights = get_pretrain_weights(
                     pretrain_weights,
-                    self.__class__.__name__,
+                    self.model_name,
                     save_dir,
                     backbone_name=backbone_name)
         if pretrain_weights is not None:

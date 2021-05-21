@@ -45,9 +45,8 @@ class BaseClassifier(BaseModel):
         num_classes (int, optional): The number of target classes. Defaults to 1000.
     """
 
-    def __init__(self, model_name='ResNet50', num_classes=1000):
+    def __init__(self, model_name='ResNet50', num_classes=1000, **params):
         self.init_params = locals()
-        del self.init_params['params']
         super(BaseClassifier, self).__init__('classifier')
         if not hasattr(architectures, model_name):
             raise Exception("ERROR: There's no model named {}.".format(
@@ -56,12 +55,12 @@ class BaseClassifier(BaseModel):
         self.model_name = model_name
         self.labels = None
         self.num_classes = num_classes
-        self.net = self.build_net()
+        self.net = self.build_net(**params)
 
-    def build_net(self):
+    def build_net(self, **params):
         with paddle.utils.unique_name.guard():
             net = architectures.__dict__[self.model_name](
-                class_dim=self.num_classes)
+                class_dim=self.num_classes, **params)
         return net
 
     def get_test_inputs(self, image_shape):
