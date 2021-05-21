@@ -45,9 +45,8 @@ class BaseClassifier(BaseModel):
         num_classes (int, optional): The number of target classes. Defaults to 1000.
     """
 
-    def __init__(self, model_name='ResNet50', num_classes=1000, **params):
+    def __init__(self, model_name='ResNet50', num_classes=1000):
         self.init_params = locals()
-        self.init_params.update(params)
         del self.init_params['params']
         super(BaseClassifier, self).__init__('classifier')
         if not hasattr(architectures, model_name):
@@ -57,14 +56,12 @@ class BaseClassifier(BaseModel):
         self.model_name = model_name
         self.labels = None
         self.num_classes = num_classes
-        for k, v in params.items():
-            setattr(self, k, v)
-        self.net = self.build_net(**params)
+        self.net = self.build_net()
 
-    def build_net(self, **params):
+    def build_net(self):
         with paddle.utils.unique_name.guard():
             net = architectures.__dict__[self.model_name](
-                class_dim=self.num_classes, **params)
+                class_dim=self.num_classes)
         return net
 
     def get_test_inputs(self, image_shape):
@@ -464,9 +461,13 @@ class MobileNetV1(BaseClassifier):
             logging.warning("scale={} is not supported by MobileNetV1, "
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
-        params = {'scale': scale}
+        if scale == 1:
+            model_name = 'MobileNetV1'
+        else:
+            model_name = 'MobileNetV1_x' + str(scale).replace('.', '_')
+        self.scale = scale
         super(MobileNetV1, self).__init__(
-            model_name='MobileNetV1', num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes)
 
 
 class MobileNetV2(BaseClassifier):
@@ -476,9 +477,12 @@ class MobileNetV2(BaseClassifier):
             logging.warning("scale={} is not supported by MobileNetV2, "
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
-        params = {'scale': scale}
+        if scale == 1:
+            model_name = 'MobileNetV2'
+        else:
+            model_name = 'MobileNetV2_x' + str(scale).replace('.', '_')
         super(MobileNetV2, self).__init__(
-            model_name='MobileNetV2', num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes)
 
 
 class MobileNetV3_small(BaseClassifier):
@@ -488,10 +492,10 @@ class MobileNetV3_small(BaseClassifier):
             logging.warning("scale={} is not supported by MobileNetV3_small, "
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
-        params = {'scale': scale}
-        model_name = 'MobileNetV3_small_x' + str(scale).replace('.', '_')
+        model_name = 'MobileNetV3_small_x' + str(float(scale)).replace('.',
+                                                                       '_')
         super(MobileNetV3_small, self).__init__(
-            model_name='MobileNetV3_small', num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes)
 
 
 class MobileNetV3_large(BaseClassifier):
@@ -501,10 +505,10 @@ class MobileNetV3_large(BaseClassifier):
             logging.warning("scale={} is not supported by MobileNetV3_large, "
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
-        params = {'scale': scale}
-        model_name = 'MobileNetV3_large_x' + str(scale).replace('.', '_')
+        model_name = 'MobileNetV3_large_x' + str(float(scale)).replace('.',
+                                                                       '_')
         super(MobileNetV3_large, self).__init__(
-            model_name=model_name, num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes)
 
 
 class DenseNet121(BaseClassifier):
@@ -604,9 +608,9 @@ class ShuffleNetV2(BaseClassifier):
             logging.warning("scale={} is not supported by ShuffleNetV2, "
                             "scale is forcibly set to 1.0".format(scale))
             scale = 1.0
-        params = {'scale': scale}
+        model_name = 'ShuffleNetV2_x' + str(float(scale)).replace('.', '_')
         super(ShuffleNetV2, self).__init__(
-            model_name='ShuffleNetV2', num_classes=num_classes, **params)
+            model_name=model_name, num_classes=num_classes)
 
     def get_test_inputs(self, image_shape):
         if image_shape == [-1, -1]:

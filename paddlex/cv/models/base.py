@@ -63,7 +63,7 @@ class BaseModel:
                     os.remove(save_dir)
                 os.makedirs(save_dir)
             if self.model_type == 'classifier':
-                scale = getattr(self, 'scale', None)
+                scale = getattr(self.net, 'scale', None)
                 pretrain_weights = get_pretrain_weights(
                     pretrain_weights,
                     self.__class__.__name__,
